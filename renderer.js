@@ -14,6 +14,10 @@ export const updateCard = (student) => {
     appendCard(student);
 }
 
+export const removeCard = (id) => {
+    document.querySelector("#card-" + studentId).remove();
+}
+
 export const appendCard = (student) => {
     const card = document.createElement('div');
     card.id = "card-" + student.id;

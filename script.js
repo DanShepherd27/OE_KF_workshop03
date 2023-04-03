@@ -1,16 +1,16 @@
 import { Student } from "./student.js";
-import { appendCard, renderCards, updateCard as renderUpdatedCard } from "./renderer.js";
+import { appendCard, renderCards, updateCard as renderUpdatedCard, removeCard } from "./renderer.js";
 import { putStudent, postStudent, deleteStudent } from "./api.js";
 
 let students;
 
-const deleteCard = async (studentId) => {
-    document.querySelector("#card-" + studentId).remove();
+export const deleteCard = async (studentId) => {
+    removeCard();
     students = students.filter(student => student.id !== studentId);
     await deleteStudent(studentId);
 }
 
-const updateCard = () => {
+export const updateCard = () => {
     const newStudent = new Student();
     
     newStudent.id = document.querySelector("#studentId").value,
@@ -39,7 +39,7 @@ const updateCard = () => {
     renderUpdatedCard(newStudent);
 }
 
-const createCard = () => {
+export const createCard = () => {
     const newStudent = document.querySelector("#studentJSON");
     postStudent(JSON.parse(newStudent));
     appendCard(JSON.parse(newStudent));
@@ -54,6 +54,7 @@ const createCard = () => {
     
     document.querySelector("#update-student-button").onclick = updateCard;
     document.querySelector("#add-student-button").onclick = createCard;
+    document.querySelector("#")
 
 })();
 
