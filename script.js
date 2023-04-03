@@ -1,3 +1,5 @@
+import { Student } from "./student.js";
+
 let students;
 
 const deleteCard = (studentId) => {
@@ -6,9 +8,30 @@ const deleteCard = (studentId) => {
     // fetch(`https://practiceapi.nikprog.hu/Student/${studentId}`);
 }
 
+const updateCard = () => {
+    const newStudent = new Student();
+    
+    newStudent.id = document.querySelector("#studentId").value,
+    newStudent.name = document.querySelector("#studentName").value,
+    newStudent.isActive = document.querySelector("#studentIsActive").isChecked,
+    newStudent.birthYear = Number(document.querySelector("#studentBirthYear").value),
+    newStudent.connections = Number(document.querySelector("#studentConnections").value),
+    newStudent.completedCredits = Number(document.querySelector("#studentCompletedCredits").value),
+    newStudent.activeSemesterCount = Number(document.querySelector("#studentSemesterCount").value),
+    newStudent.image = document.querySelector("#studentImage").value,
+    
+
+    console.log(`New student: ${JSON.stringify(newStudent)}`);
+
+    const oldStudent = students.find(student => student.id === newStudent.id);
+
+    oldStudent = newStudent;
+}
+
 (async function () {
     const response = await fetch("https://practiceapi.nikprog.hu/Student");
     students = await response.json();
+    students = students.map(student => new Student(student));
     console.log(students);
 
     students.forEach(student => {
