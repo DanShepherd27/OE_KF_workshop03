@@ -14,7 +14,7 @@ export const updateCard = () => {
     
     newStudent.id = document.querySelector("#studentId").value,
     newStudent.name = document.querySelector("#studentName").value,
-    newStudent.isActive = document.querySelector("#studentIsActive").isChecked,
+    newStudent.isActive = document.querySelector("#studentIsActive").checked,
     newStudent.birthYear = Number(document.querySelector("#studentBirthYear").value),
     newStudent.connections = Number(document.querySelector("#studentConnections").value),
     newStudent.completedCredits = Number(document.querySelector("#studentCompletedCredits").value),
@@ -23,12 +23,22 @@ export const updateCard = () => {
     
     console.log(`New student: ${JSON.stringify(newStudent)}`);
 
-    let oldStudent = students.find(student => student.id === newStudent.id);
-
-    oldStudent = newStudent;
-
-    renderCards(students);
-
+    students.forEach(async student => {
+        if(student.id === newStudent.id)
+        {
+            const response = await fetch("https://practiceapi.nikprog.hu/Student", {
+                method: 'PUT',
+                headers: {
+                'Content-type': 'application/json'
+                },
+                body: JSON.stringify(newStudent)
+            });
+            const resData = await response.json();
+            console.log(resData);
+            student = newStudent;
+            renderCards(students);
+        }
+    });
 }
 
 (async function () {
@@ -45,7 +55,7 @@ export const updateCard = () => {
 my student:
 
 {
-    "id": "de331e0a-b164-45a2-888b-aaa3d432b24a",
+    "id": "e9e8211a-20c2-4467-bf6b-e2b0fe0b09ff",
     "name": "JD - Gipsz Jakab",
     "isActive": true,
     "birthYear": 2000,
