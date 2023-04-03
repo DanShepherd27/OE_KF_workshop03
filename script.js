@@ -1,5 +1,5 @@
 import { Student } from "./student.js";
-import { renderCards } from "./renderer.js";
+import { renderCards, updateCard as renderUpdatedCard } from "./renderer.js";
 
 let students;
 
@@ -20,25 +20,28 @@ export const updateCard = () => {
     newStudent.completedCredits = Number(document.querySelector("#studentCompletedCredits").value),
     newStudent.activeSemesterCount = Number(document.querySelector("#studentSemesterCount").value),
     newStudent.image = document.querySelector("#studentImage").value,
-    
-    console.log(`New student: ${JSON.stringify(newStudent)}`);
 
-    students.forEach(async student => {
+    students.forEach(async (student, index) => {
         if(student.id === newStudent.id)
         {
-            const response = await fetch("https://practiceapi.nikprog.hu/Student", {
+            await fetch("https://practiceapi.nikprog.hu/Student", {
                 method: 'PUT',
                 headers: {
                 'Content-type': 'application/json'
                 },
                 body: JSON.stringify(newStudent)
             });
-            const resData = await response.json();
-            console.log(resData);
-            student = newStudent;
-            renderCards(students);
+
+            students[index].name = newStudent.name;
+            students[index].isActive = newStudent.isActive;
+            students[index].birthYear = newStudent.birthYear;
+            students[index].connections = newStudent.connections;
+            students[index].completedCredits = newStudent.completedCredits;
+            students[index].image = newStudent.image;
         }
     });
+
+    renderUpdatedCard(newStudent);
 }
 
 (async function () {
