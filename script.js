@@ -1,15 +1,16 @@
 import { Student } from "./student.js";
-import { renderCards, updateCard as renderUpdatedCard } from "./renderer.js";
+import { appendCard, renderCards, updateCard as renderUpdatedCard } from "./renderer.js";
+import { putStudent, postStudent, deleteStudent } from "./api.js";
 
 let students;
 
-export const deleteCard = (studentId) => {
+const deleteCard = async (studentId) => {
     document.querySelector("#card-" + studentId).remove();
     students = students.filter(student => student.id !== studentId);
-    // fetch(`https://practiceapi.nikprog.hu/Student/${studentId}`);
+    await deleteStudent(studentId);
 }
 
-export const updateCard = () => {
+const updateCard = () => {
     const newStudent = new Student();
     
     newStudent.id = document.querySelector("#studentId").value,
@@ -24,13 +25,7 @@ export const updateCard = () => {
     students.forEach(async (student, index) => {
         if(student.id === newStudent.id)
         {
-            await fetch("https://practiceapi.nikprog.hu/Student", {
-                method: 'PUT',
-                headers: {
-                'Content-type': 'application/json'
-                },
-                body: JSON.stringify(newStudent)
-            });
+           putStudent(newStudent);
 
             students[index].name = newStudent.name;
             students[index].isActive = newStudent.isActive;
@@ -44,6 +39,12 @@ export const updateCard = () => {
     renderUpdatedCard(newStudent);
 }
 
+const createCard = () => {
+    const newStudent = document.querySelector("#studentJSON");
+    postStudent(JSON.parse(newStudent));
+    appendCard(JSON.parse(newStudent));
+}
+
 (async function () {
     const response = await fetch("https://practiceapi.nikprog.hu/Student");
     students = await response.json();
@@ -52,6 +53,8 @@ export const updateCard = () => {
     renderCards(students);
     
     document.querySelector("#update-student-button").onclick = updateCard;
+    document.querySelector("#add-student-button").onclick = createCard;
+
 })();
 
 /*

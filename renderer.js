@@ -14,7 +14,7 @@ export const updateCard = (student) => {
     appendCard(student);
 }
 
-const appendCard = (student) => {
+export const appendCard = (student) => {
     const card = document.createElement('div');
     card.id = "card-" + student.id;
     card.innerHTML =  (student.isActive ? 
