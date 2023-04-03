@@ -23,7 +23,36 @@
               <a class="nav-link" href="#">Delete</a>
             </li>
           </ul> -->
-          <div class="form-floating">
+
+          <div class="form-floating bg-primary-subtle m-3 p-3 update-form">
+            <div class="m-3">
+                <label for="studentId" class="form-label">Student ID:</label>
+                <input type="text" class="form-control" id="studentId" aria-describedby="studentIdHelp">
+                <div id="studentIdHelp" class="form-text">Enter the ID of the student to be updated.</div>
+            </div>
+            <div class="m-3">
+                <label for="birthYear" class="form-label">Birth year:</label>
+                <input type="text" class="form-control" id="birthYear">
+            </div>
+            <div class="m-3">
+                <label for="completedCredits" class="form-label">Completed credits:</label>
+                <input type="text" class="form-control" id="completedCredits">
+            </div>
+            <div class="m-3">
+                <label for="semesterCount" class="form-label">Semester count:</label>
+                <input type="text" class="form-control" id="semesterCount">
+            </div>
+            <div class="m-3">
+                <label for="connections" class="form-label">Connections:</label>
+                <input type="text" class="form-control" id="connections">
+            </div>
+            <div class="m-3">
+                <label for="image" class="form-label">Profile image:</label>
+                <input type="text" class="form-control" id="image">
+            </div>
+          </div>
+
+          <div class="form-floating create-form">
             <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
             <label for="floatingTextarea2">Comments</label>
           </div>

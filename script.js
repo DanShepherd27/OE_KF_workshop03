@@ -31,3 +31,18 @@ const deleteCard = (studentId) => {
         document.querySelector("#student-list").appendChild(card);
     });    
 })();
+
+/*
+my student:
+
+{
+    "id": "de331e0a-b164-45a2-888b-aaa3d432b24a",
+    "name": "JD - Gipsz Jakab",
+    "isActive": true,
+    "birthYear": 2000,
+    "connections": 13,
+    "completedCredits": 155,
+    "activeSemesterCount": 6,
+    "image": "https://picsum.photos/400"
+  }
+*/
