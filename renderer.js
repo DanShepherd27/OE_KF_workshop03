@@ -18,13 +18,16 @@ export const removeCard = (studentId) => {
 };
 
 export const appendCard = (student) => {
-  const card = document.createElement("div");
+  const card = document.createElement("li");
+  card.className = "d-flex justify-content-center p-2";
+  card.style = "max-width: 250px; width: 250px;";
   card.id = "card-" + student.id;
   card.innerHTML =
     (student.isActive
-      ? `<div class="card border-success mb-3" style="max-width: 18rem;">`
-      : `<div class="card border-danger mb-3" style="max-width: 18rem;">`) +
-    `<img src="${student.image}" class="card-img-top" alt="...">
+      ? `<div class="card border-success border-4 rounded-3 mb-3 w-100">`
+      : `<div class="card border-danger border-4 rounded-3 mb-3 w-100">`) +
+    ` <img src="${student.image}" class="card-img-top object-fit-cover h-50" alt="...">
+      <div class="p-2">
         <h5 class="card-title">${student.name}</h5>
         <div class="card-body">
             <p class="card-text">Birth year: ${student.birthYear}</p>
@@ -33,9 +36,10 @@ export const appendCard = (student) => {
             <p class="card-text">Connections: ${student.connections}</p>
         </div>
         <div class="d-flex justify-content-between">
-            <button id="select-button-${student.id}" class="btn btn-primary w-50">Select</button>
-            <button id="delete-button-${student.id}" class="btn btn-danger w-50">Delete</button>
+            <button id="select-button-${student.id}" class="btn btn-primary p-2" style="width: 48%;">Select</button>
+            <button id="delete-button-${student.id}" class="btn btn-danger p-2" style="width: 48%;">Delete</button>
         </div>
+      </div>
     </div>`;
   document.querySelector("#student-list").appendChild(card);
   updateDeleteAndSelectButtons(student);
