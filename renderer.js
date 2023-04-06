@@ -24,10 +24,11 @@ export const appendCard = (student) => {
   card.id = "card-" + student.id;
   card.innerHTML =
     (student.isActive
-      ? `<div class="card border-success border-4 rounded-3 mb-3 w-100">`
-      : `<div class="card border-danger border-4 rounded-3 mb-3 w-100">`) +
-    ` <img src="${student.image}" class="card-img-top object-fit-cover h-50" alt="...">
-      <div class="p-2">
+      ? `<div class="card border-success border-4 rounded-3 mb-3 w-100">
+      <img src="${student.image}" class="card-img-top object-fit-cover h-50" alt="...">`
+      : `<div class="card border-danger border-4 rounded-3 mb-3 w-100"> 
+      <img src="${student.image}" class="card-img-top object-fit-cover h-50" style="filter: grayscale(100%); opacity: 70%;" alt="...">`) +
+    `<div class="p-2">
         <h5 class="card-title">${student.name}</h5>
         <div class="card-body">
             <p class="card-text">Birth year: ${student.birthYear}</p>
