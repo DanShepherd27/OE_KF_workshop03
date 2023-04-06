@@ -1,61 +1,83 @@
 import { Student } from "./student.js";
-import { appendCard, renderCards, updateCard as renderUpdatedCard, removeCard } from "./renderer.js";
-import { putStudent, postStudent, deleteStudent } from "./api.js";
+import {
+  appendCard,
+  renderCards,
+  updateCard as renderUpdatedCard,
+  removeCard,
+  loadDataIntoForm,
+} from "./renderer.js";
+import {
+  getAllStudents,
+  putStudent,
+  postStudent,
+  deleteStudent,
+} from "./api.js";
 
 let students;
 
 export const deleteCard = async (studentId) => {
-    removeCard();
-    students = students.filter(student => student.id !== studentId);
-    await deleteStudent(studentId);
-}
+  removeCard(studentId);
+  students = students.filter((student) => student.id !== studentId);
+  await deleteStudent(studentId);
+};
 
-export const updateCard = () => {
-    const newStudent = new Student();
-    
-    newStudent.id = document.querySelector("#studentId").value,
-    newStudent.name = document.querySelector("#studentName").value,
-    newStudent.isActive = document.querySelector("#studentIsActive").checked,
-    newStudent.birthYear = Number(document.querySelector("#studentBirthYear").value),
-    newStudent.connections = Number(document.querySelector("#studentConnections").value),
-    newStudent.completedCredits = Number(document.querySelector("#studentCompletedCredits").value),
-    newStudent.activeSemesterCount = Number(document.querySelector("#studentSemesterCount").value),
-    newStudent.image = document.querySelector("#studentImage").value,
+export const updateDeleteAndSelectButtons = (student) => {
+  document.querySelector("#delete-button-" + student.id).onclick = () =>
+    deleteCard(student.id);
+  document.querySelector("#select-button-" + student.id).onclick = () =>
+    loadDataIntoForm(student);
+};
 
-    students.forEach(async (student, index) => {
-        if(student.id === newStudent.id)
-        {
-           putStudent(newStudent);
+export const updateCard = async () => {
+  let newStudent = new Student({
+    id: document.querySelector("#studentId").value,
+    name: document.querySelector("#studentName").value,
+    isActive: document.querySelector("#studentIsActive").checked,
+    birthYear: Number(document.querySelector("#studentBirthYear").value),
+    connections: Number(document.querySelector("#studentConnections").value),
+    completedCredits: Number(
+      document.querySelector("#studentCompletedCredits").value
+    ),
+    activeSemesterCount: Number(
+      document.querySelector("#studentSemesterCount").value
+    ),
+    image: document.querySelector("#studentImage").value,
+  });
 
-            students[index].name = newStudent.name;
-            students[index].isActive = newStudent.isActive;
-            students[index].birthYear = newStudent.birthYear;
-            students[index].connections = newStudent.connections;
-            students[index].completedCredits = newStudent.completedCredits;
-            students[index].image = newStudent.image;
-        }
-    });
+  // update student
+  const studentToUpdate = students.find(
+    (student) => student.id === newStudent.id
+  );
+  if (studentToUpdate) {
+    studentToUpdate.name = newStudent.name;
+    studentToUpdate.isActive = newStudent.isActive;
+    studentToUpdate.birthYear = newStudent.birthYear;
+    studentToUpdate.connections = newStudent.connections;
+    studentToUpdate.completedCredits = newStudent.completedCredits;
+    studentToUpdate.activeSemesterCount = newStudent.activeSemesterCount;
+    studentToUpdate.image = newStudent.image;
+    putStudent(newStudent);
+  } else {
+    newStudent = await postStudent(newStudent);
+    students.push(newStudent);
+  }
+  renderUpdatedCard(newStudent);
+};
 
-    renderUpdatedCard(newStudent);
-}
-
-export const createCard = () => {
-    const newStudent = document.querySelector("#studentJSON");
-    postStudent(JSON.parse(newStudent));
-    appendCard(JSON.parse(newStudent));
-}
+export const createCard = async () => {
+  let newStudent = document.querySelector("#studentJSON").value;
+  newStudent = await postStudent(JSON.parse(newStudent));
+  appendCard(newStudent);
+};
 
 (async function () {
-    const response = await fetch("https://practiceapi.nikprog.hu/Student");
-    students = await response.json();
-    students = students.map(student => new Student(student));
+  students = await getAllStudents();
+  students = students.map((student) => new Student(student));
 
-    renderCards(students);
-    
-    document.querySelector("#update-student-button").onclick = updateCard;
-    document.querySelector("#add-student-button").onclick = createCard;
-    document.querySelector("#")
+  renderCards(students);
 
+  document.querySelector("#update-student-button").onclick = updateCard;
+  document.querySelector("#add-student-button").onclick = createCard;
 })();
 
 /*
