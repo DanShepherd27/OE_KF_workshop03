@@ -59,7 +59,7 @@ export const updateCard = async () => {
     putStudent(newStudent);
   } else {
     newStudent = await postStudent(newStudent);
-    students.push(newStudent);
+    students.unshift(newStudent);
   }
   renderUpdatedCard(newStudent);
 };
@@ -70,6 +70,22 @@ export const createCard = async () => {
   appendCard(newStudent);
 };
 
+export const filterCards = () => {
+  const dropdown = document.querySelector("#filter-dropdown");
+  document.querySelector("#student-list").innerHTML = "";
+  switch (dropdown.value) {
+    case "all":
+      renderCards(students);
+      break;
+    case "active":
+      renderCards(students.filter((s) => s.isActive));
+      break;
+    case "passive":
+      renderCards(students.filter((s) => !s.isActive));
+      break;
+  }
+};
+
 (async function () {
   students = await getAllStudents();
   students = students.map((student) => new Student(student));
@@ -78,6 +94,7 @@ export const createCard = async () => {
 
   document.querySelector("#update-student-button").onclick = updateCard;
   document.querySelector("#add-student-button").onclick = createCard;
+  document.querySelector("#filter-dropdown").onchange = filterCards;
 })();
 
 /*
